@@ -47,21 +47,36 @@ const render = () => {
   );
 
   //Bird
-  ctx.drawImage(
-    img,
-    432,
-    Math.floor((index % 9) / 3) * size[1],
-    ...size,
-    canvas.width / 2 - size[0] / 2,
-    flyHeight,
-    ...size
-  );
-  flyHeight = canvas.height / 2 - size[1] / 2;
-
-  ctx.fillText(`Meilleur score : ${bestScore}`, 55, 245);
-  ctx.fillText(`Cliquez pour jouer`, 48, 535);
-  ctx.font = "bold 30px courier";
+  if (gamePlaying) {
+    ctx.drawImage(
+      img,
+      432,
+      Math.floor((index % 9) / 3) * size[1],
+      ...size,
+      cTenth,
+      flyHeight,
+      ...size
+    );
+    flight += gravity;
+    flyHeight = Math.min(flyHeight + flight, canvas.height - size[1]);
+  } else {
+    ctx.drawImage(
+      img,
+      432,
+      Math.floor((index % 9) / 3) * size[1],
+      ...size,
+      canvas.width / 2 - size[0] / 2,
+      flyHeight,
+      ...size
+    );
+    flyHeight = canvas.height / 2 - size[1] / 2;
+    ctx.fillText(`Meilleur score : ${bestScore}`, 55, 245);
+    ctx.fillText(`Cliquez pour jouer`, 48, 535);
+    ctx.font = "bold 30px courier";
+  }
 
   window.requestAnimationFrame(render);
 };
 img.onload = render;
+
+document.addEventListener("click", () => (gamePlaying = true));
