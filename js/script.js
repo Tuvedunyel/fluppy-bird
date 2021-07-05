@@ -11,12 +11,29 @@ const size = [51, 36];
 const jump = -11.5;
 const cTenth = canvas.width / 10;
 
+//Pipe Settings
+const pipeWidth = 78;
+const pipeGap = 270;
+const pipeLoc = () =>
+  Math.random() * (canvas.height - (pipeGap + pipeWidth) - pipeWidth) +
+  pipeWidth;
+
 let index = 0,
   bestScore = 0,
   currentScore = 0,
   pipes = [],
   flight,
   flyHeight;
+
+const setup = () => {
+  currentScore = 0;
+  flight = jump;
+  flyHeight = canvas.height / 2 - size[1] / 2;
+  pipes = Array(3)
+    .fill()
+    .map((a, i) => [canvas.width + i * (pipeGap + pipeWidth), pipeLoc()]);
+  console.log(pipes);
+};
 
 const render = () => {
   index++;
@@ -75,9 +92,42 @@ const render = () => {
     ctx.font = "bold 30px courier";
   }
 
+  // pipe display
+  if (gamePlaying) {
+    pipes.map((pipe) => {
+      pipe[0] -= speed;
+
+      //Top pipe
+      ctx.drawImage(
+        img,
+        432,
+        588 - pipe[1],
+        pipeWidth,
+        pipe[1],
+        pipe[0],
+        0,
+        pipeWidth,
+        pipe[1]
+      );
+
+      //bottom Pipe
+      ctx.drawImage(
+        img,
+        432 + pipeWidth,
+        108,
+        pipeWidth,
+        canvas.height - pipe[1] + pipeGap,
+        pipe[0],
+        pipe[1] + pipeGap,
+        pipeWidth,
+        canvas.height - pipe[1] + pipeGap
+      );
+    });
+  }
+
   window.requestAnimationFrame(render);
 };
+setup();
 img.onload = render;
-
 document.addEventListener("click", () => (gamePlaying = true));
 window.onclick = () => (flight = jump);
