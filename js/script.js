@@ -80,3 +80,4 @@ const render = () => {
 img.onload = render;
 
 document.addEventListener("click", () => (gamePlaying = true));
+window.onclick = () => (flight = jump);
