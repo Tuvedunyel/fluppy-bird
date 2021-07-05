@@ -122,6 +122,18 @@ const render = () => {
         pipeWidth,
         canvas.height - pipe[1] + pipeGap
       );
+
+      if (pipe[0] <= -pipeWidth) {
+        currentScore++;
+        bestScore = Math.max(bestScore, currentScore);
+
+        //create new pipe
+        pipes = [
+          ...pipes.slice(1),
+          [pipes[pipes.length - 1][0] + pipeGap + pipeWidth, pipeLoc()],
+        ];
+        console.log(pipes);
+      }
     });
   }
 
